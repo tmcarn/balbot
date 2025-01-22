@@ -1,5 +1,6 @@
 from gpiozero import PWMOutputDevice
 import time
+import numpy as np
 
 # Pin configuration
 PIN = 26
@@ -26,12 +27,14 @@ print("ESC armed. Ready to control!")
 # Example throttle levels
 try:
     print("Ramp Up")
-    for i in range(MIN_THROTTLE, MAX_THROTTLE, 0.01):
+    up_range = np.linspace(MIN_THROTTLE, MAX_THROTTLE, num=50)
+    for i in up_range:
         motor.value = i
         time.sleep(1)
 
     print("Ramp Down")
-    for i in range(MAX_THROTTLE, MIN_THROTTLE, -0.01):
+    down_range = np.linspace(MAX_THROTTLE, MIN_THROTTLE, num=50)
+    for i in down_range:
         motor.value = i
         time.sleep(1)
 
