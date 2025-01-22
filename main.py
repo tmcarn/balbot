@@ -1,5 +1,8 @@
 from imu import IMU
 from motor_controller import MotorController
 
+import math
+
 imu = IMU()
-print(imu.get_pitch())
+for i in range(1000):
+    print(math.degrees(imu.get_pitch()))
