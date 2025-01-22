@@ -16,26 +16,24 @@ motor = PWMOutputDevice(PIN, frequency=PWM_FREQUENCY)
 # Arming sequence
 print("Arming ESC...")
 motor.value = MAX_THROTTLE  # Full throttle (2ms pulse)
-time.sleep(2)  # Hold for 2 seconds
+time.sleep(5)  # Hold for 2 seconds
 
 motor.value = MIN_THROTTLE  # Zero throttle (1ms pulse)
-time.sleep(2)  # Hold for 2 seconds
+time.sleep(5)  # Hold for 2 seconds
 
 print("ESC armed. Ready to control!")
 
 # Example throttle levels
 try:
-    print("Half throttle")
-    motor.value = MID_THROTTLE  # Mid throttle (1.5ms pulse)
-    time.sleep(4)
+    print("Ramp Up")
+    for i in range(MIN_THROTTLE, MAX_THROTTLE, 0.01):
+        motor.value = i
+        time.sleep(1)
 
-    print("Full throttle")
-    motor.value = MAX_THROTTLE  # Full throttle (2ms pulse)
-    time.sleep(2)
-
-    print("Zero throttle")
-    motor.value = MIN_THROTTLE  # Zero throttle (1ms pulse)
-    time.sleep(2)
+    print("Ramp Down")
+    for i in range(MAX_THROTTLE, MIN_THROTTLE, -0.01):
+        motor.value = i
+        time.sleep(1)
 
 finally:
     # Ensure motor is stopped
