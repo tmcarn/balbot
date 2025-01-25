@@ -15,13 +15,17 @@ class IMU():
         # Reading in Orientation Data
         attitude = self.board.getData(MultiWii.ATTITUDE)
 
-        # pitch = math.radians(attitude['angx'])
-        roll = math.radians(attitude['angy']) - (math.pi/2) - PITCH_OFFSET # Subract by 90 deg because of imu placement
-        # yaw = math.radians(attitude['heading'])
+        roll = math.radians(attitude['angx'])
+        pitch = math.radians(attitude['angy']) + (math.pi/2) - PITCH_OFFSET # Subract by 90 deg because of imu placement
+        yaw = math.radians(attitude['heading'])
 
-        return roll # in radians
+        return pitch # in radians
     
 
+        
+    
+
+# FOR TESTING
 imu = IMU()
 
 while True:
