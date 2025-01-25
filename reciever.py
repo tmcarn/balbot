@@ -1,6 +1,6 @@
 from flySkyiBus import IBus
 
-bus = IBus('/dev/ttyA-MA0')  # use your serial port name here
+bus = IBus('/dev/ttyAMA10')  # use your serial port name here
 
 while True:
     data = bus.read()  # Read data from serial port
