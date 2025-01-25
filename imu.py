@@ -3,7 +3,7 @@ import time
 import numpy as np
 import math
 
-PITCH_OFFSET = -0.0837758040957278
+PITCH_OFFSET = 0
 
 
 class IMU():
@@ -16,7 +16,7 @@ class IMU():
         attitude = self.board.getData(MultiWii.ATTITUDE)
 
         roll = math.radians(attitude['angx'])
-        pitch = math.radians(attitude['angy']) + (math.pi/2) - PITCH_OFFSET # Subract by 90 deg because of imu placement
+        pitch = (math.pi / 2) - math.radians(attitude['angy'])  # Subract by 90 deg because of imu placement
         yaw = math.radians(attitude['heading'])
 
         return pitch # in radians
@@ -25,8 +25,8 @@ class IMU():
         
     
 
-# FOR TESTING
-imu = IMU()
+# # FOR TESTING
+# imu = IMU()
 
-while True:
-    print(math.degrees(imu.get_pitch()))
+# while True:
+#     print(math.degrees(imu.get_pitch()))

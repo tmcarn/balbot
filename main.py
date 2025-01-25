@@ -11,7 +11,8 @@ MAX_PITCH = math.pi / 8 # ~ 22 degrees
 DEADBAND = 0.05 # ~ 3 degrees
 
 imu = IMU()
-motor = MotorController(26)
+motor1 = MotorController(26)
+motor2 = MotorController(12)
 pid = PID()
 reciever = Reciever()
 
@@ -31,15 +32,15 @@ while True:
     prev_time = current_time
 
     if np.abs(pitch) > MAX_PITCH:
-        motor.kill_motor() # stops motor
+        motor1.kill_motor() # stops motor
         break 
 
     elif np.abs(pitch) < DEADBAND:
-        motor.set_motor_speed(0.05) # Temporarily stops motor -> balancing correctly
+        motor1.set_motor_speed(0.05) # Temporarily stops motor -> balancing correctly
         continue
 
     motor_value = pid.compute(pitch, dt)
-    motor.set_motor_speed(motor_value)
+    motor1.set_motor_speed(motor_value)
 
 
 
