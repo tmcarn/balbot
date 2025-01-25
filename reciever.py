@@ -1,11 +1,12 @@
 from flySkyiBus import IBus
+import numpy as np
 
 
-bus = IBus('/dev/ttyAMA10')  # use your serial port name here
+bus = IBus('/dev/ttyAMA0')  # use your serial port name here
 
 while True:
-    data = bus.read()  # Read data from serial port
-    print(data)  # print the data read from the serial port
+    data = np.array(bus.read())  # Read data from serial port
+    print(data[2:8])  # print the data read from the serial port
 
 
 # import serial
