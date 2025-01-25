@@ -29,4 +29,4 @@ class IMU():
 imu = IMU()
 
 while True:
-    print(math.degrees(imu.get_pitch()))
+    print(imu.get_pitch())
