@@ -16,10 +16,10 @@ class IMU():
         attitude = self.board.getData(MultiWii.ATTITUDE)
 
         roll = math.radians(attitude['angx'])
-        pitch = (math.pi / 2) - math.radians(attitude['angy'])  # Subract by 90 deg because of imu placement
+        pitch = math.radians(attitude['angy'])
         yaw = math.radians(attitude['heading'])
 
-        return roll, pitch # in radians
+        return pitch # in radians
     
 
         

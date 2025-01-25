@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 MOTOR_MAX = 0.1
 MOTOR_MIN = 0.05
@@ -8,7 +9,7 @@ class PID():
         self.Kp = 0
         self.Ki = 0
         self.Kd = 0
-        self.setpoint = 0 
+        self.setpoint = math.pi / 2 
         
         self.prev_error = 0
         self.integral = 0
