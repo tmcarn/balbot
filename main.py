@@ -1,6 +1,7 @@
 from imu import IMU
 from motor_controller import MotorController
 from pid import PID
+from reciever import Reciever
 
 import math
 import time
@@ -12,6 +13,7 @@ DEADBAND = 0.05 # ~ 3 degrees
 imu = IMU()
 motor = MotorController(26)
 pid = PID()
+reciever = Reciever()
 
 pid.set_constants(5,0,0)
 
@@ -19,6 +21,7 @@ pid.set_constants(5,0,0)
 prev_time = time.time()
 current_time = 0
 dt = 0
+
 
 while True:
     pitch = imu.get_pitch() # in radians

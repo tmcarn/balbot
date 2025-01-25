@@ -20,3 +20,9 @@ class IMU():
         # yaw = math.radians(attitude['heading'])
 
         return roll # in radians
+    
+
+imu = IMU()
+
+while True:
+    print(imu.get_pitch())
