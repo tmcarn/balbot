@@ -1,3 +1,6 @@
+import sys
+sys.path.append("/FlySky-iBus/flySkyiBus")
+
 from flySkyiBus import IBus
 
 bus = IBus('/dev/serial0')  # use your serial port name here
