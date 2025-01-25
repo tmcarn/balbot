@@ -20,10 +20,10 @@ class MotorController():
         # Arming sequence
         print("Arming ESC...")
         self.motor.value = MAX_THROTTLE  # Full throttle (2ms pulse)
-        time.sleep(.1)  # Hold for 2 seconds
+        time.sleep(2)  # Hold for 2 seconds
 
         self.motor.value = MIN_THROTTLE  # Zero throttle (1ms pulse)
-        time.sleep(.1)  # Hold for 2 seconds
+        time.sleep(2)  # Hold for 2 seconds
 
         print("ESC armed. Ready to control!")
 
@@ -39,13 +39,13 @@ class MotorController():
             up_range = np.linspace(MIN_THROTTLE, MAX_THROTTLE, num=50)
             for i in up_range:
                 self.motor.value = i
-                time.sleep(.1)
+                time.sleep(.5)
 
             print("Ramp Down")
             down_range = np.linspace(MAX_THROTTLE, MIN_THROTTLE, num=50)
             for i in down_range:
                 self.motor.value = i
-                time.sleep(.1)
+                time.sleep(.5)
 
         finally:
             # Ensure motor is stopped
