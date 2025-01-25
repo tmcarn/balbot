@@ -5,7 +5,7 @@ import numpy as np
 # ESC configuration
 PWM_FREQUENCY = 50  # 50 Hz (20ms period)
 MIN_THROTTLE = 0.05  # 1ms pulse width (5% duty cycle)
-MAX_THROTTLE = 0.10  # 2ms pulse width (10% duty cycle)
+MAX_THROTTLE = 0.06  
 MID_THROTTLE = (MIN_THROTTLE + MAX_THROTTLE) / 2  # Midpoint
 
 class MotorController():
@@ -39,13 +39,13 @@ class MotorController():
             up_range = np.linspace(MIN_THROTTLE, MAX_THROTTLE, num=50)
             for i in up_range:
                 self.motor.value = i
-                time.sleep(.5)
+                time.sleep(.1)
 
             print("Ramp Down")
             down_range = np.linspace(MAX_THROTTLE, MIN_THROTTLE, num=50)
             for i in down_range:
                 self.motor.value = i
-                time.sleep(.5)
+                time.sleep(.1)
 
         finally:
             # Ensure motor is stopped

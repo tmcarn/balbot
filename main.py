@@ -25,7 +25,6 @@ current_time = 0
 dt = 0
 
 motor1.test_motor()
-motor2.test_motor()
 
 
 # while True:
