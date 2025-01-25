@@ -7,6 +7,7 @@ import time
 import numpy as np
 
 MAX_PITCH = math.pi / 8 # ~ 22 degrees
+DEADBAND = 0.05 # ~ 3 degrees
 
 imu = IMU()
 motor = MotorController(26)
@@ -29,6 +30,10 @@ while True:
     if np.abs(pitch) > MAX_PITCH:
         motor.kill_motor() # stops motor
         break 
+
+    elif np.abs(pitch) < DEADBAND:
+        motor.set_motor_speed(0.05) # Temporarily stops motor -> balancing correctly
+        continue
 
     motor_value = pid.compute(pitch, dt)
     motor.set_motor_speed(motor_value)
