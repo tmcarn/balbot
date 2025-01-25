@@ -10,7 +10,7 @@
 
 import serial
 
-ser = serial.Serial('/dev/ttyAMA10', baudrate=115200, timeout=1)
+ser = serial.Serial('/dev/ttyAMA0', baudrate=115200, timeout=1)
 
 while True:
     data = ser.readline(32)
