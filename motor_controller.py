@@ -20,10 +20,10 @@ class MotorController():
         # Arming sequence
         print("Arming ESC...")
         self.motor.value = MAX_THROTTLE  # Full throttle (2ms pulse)
-        time.sleep(.1)  # Hold for 2 seconds
+        time.sleep(2)  # Hold for 2 seconds
 
         self.motor.value = MIN_THROTTLE  # Zero throttle (1ms pulse)
-        time.sleep(.1)  # Hold for 2 seconds
+        time.sleep(2)  # Hold for 2 seconds
 
         print("ESC armed. Ready to control!")
 
