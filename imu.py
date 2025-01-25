@@ -25,8 +25,8 @@ class IMU():
         
     
 
-# FOR TESTING
-imu = IMU()
+# # FOR TESTING
+# imu = IMU()
 
-while True:
-    print(imu.get_pitch())
+# while True:
+#     print(imu.get_pitch())
