@@ -28,6 +28,10 @@ dt = 0
 while True:
     pitch = imu.get_pitch() # in radians
 
+    if pitch == None:
+        print("No IMU Reading")
+        continue
+
     print("Pitch:", pitch)
     
     current_time = time.time()

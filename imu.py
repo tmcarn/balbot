@@ -15,6 +15,9 @@ class IMU():
         # Reading in Orientation Data
         attitude = self.board.getData(MultiWii.ATTITUDE)
 
+        if attitude == None:
+            return None
+        
         roll = math.radians(attitude['angx'])
         pitch = math.radians(attitude['angy'])
         yaw = math.radians(attitude['heading'])
