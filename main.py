@@ -24,25 +24,28 @@ prev_time = time.time()
 current_time = 0
 dt = 0
 
+motor1.test_motor()
+motor2.test_motor()
 
-while True:
-    pitch = imu.get_pitch() # in radians
 
-    if pitch == None:
-        print("No IMU Reading")
-        continue
+# while True:
+#     pitch = imu.get_pitch() # in radians
 
-    print("Pitch:", pitch)
+#     if pitch == None:
+#         print("No IMU Reading")
+#         continue
+
+#     print("Pitch:", pitch)
     
-    current_time = time.time()
-    dt = current_time - prev_time
-    prev_time = current_time
+#     current_time = time.time()
+#     dt = current_time - prev_time
+#     prev_time = current_time
 
-    motor_value = pid.compute(pitch, dt)
-    motor1.set_motor_speed(motor_value)
-    motor2.set_motor_speed(motor_value)
+#     motor_value = pid.compute(pitch, dt)
+#     motor1.set_motor_speed(motor_value)
+#     motor2.set_motor_speed(motor_value)
 
-    time.sleep(2)
+#     time.sleep(2)
 
 
 

@@ -33,21 +33,25 @@ class MotorController():
     def kill_motor(self):
         self.motor.value = 0
 
-# # Example throttle levels
-# try:
-#     print("Ramp Up")
-#     up_range = np.linspace(MIN_THROTTLE, MAX_THROTTLE, num=50)
-#     for i in up_range:
-#         motor.value = i
-#         time.sleep(.1)
+    def test_motor(self):
+        try:
+            print("Ramp Up")
+            up_range = np.linspace(MIN_THROTTLE, MAX_THROTTLE, num=50)
+            for i in up_range:
+                self.motor.value = i
+                time.sleep(.1)
 
-#     print("Ramp Down")
-#     down_range = np.linspace(MAX_THROTTLE, MIN_THROTTLE, num=50)
-#     for i in down_range:
-#         motor.value = i
-#         time.sleep(.1)
+            print("Ramp Down")
+            down_range = np.linspace(MAX_THROTTLE, MIN_THROTTLE, num=50)
+            for i in down_range:
+                self.motor.value = i
+                time.sleep(.1)
 
-# finally:
-#     # Ensure motor is stopped
-#     motor.value = 0
-#     print("Motor stopped. All done!")
+        finally:
+            # Ensure motor is stopped
+            self.motor.value = 0
+            print("Motor stopped. All done!")
+
+        
+
+# Example throttle levels
