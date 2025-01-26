@@ -3,7 +3,7 @@ import math
 
 MOTOR_MAX = 0.1
 MOTOR_MIN = 0.05
-MOTOR_SAFE_MAX = 0.06
+MOTOR_SAFE_MAX = 0.057
 
 class PID():
     def __init__(self):

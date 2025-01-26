@@ -44,7 +44,7 @@ while True:
 
     motor_value = pid.compute(pitch, dt)
     motor1.set_motor_speed(motor_value)
-    motor2.set_motor_speed(motor_value)
+    # motor2.set_motor_speed(motor_value)
     time.sleep(LOOP_DELAY)
 
 
