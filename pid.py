@@ -32,6 +32,7 @@ class PID():
         print("MOTOR VAL:", motor_value)
 
         motor_value = np.clip(motor_value, MOTOR_MIN, MOTOR_SAFE_MAX)
+        print("CLIPED VAL:", motor_value)
 
         return motor_value
     

@@ -31,9 +31,6 @@ class MotorController():
     def set_motor_speed(self, value):
         self.motor.value = value
 
-    def kill_motor(self):
-        self.motor.value = 0
-
     def test_motor(self):
         try:
             print("Ramp Up")
