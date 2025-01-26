@@ -10,7 +10,7 @@ class PID():
         self.Kp = 0
         self.Ki = 0
         self.Kd = 0
-        self.setpoint = math.pi / 2 
+        self.setpoint = 90
         
         self.prev_error = 0
         self.integral = 0
