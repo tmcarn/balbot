@@ -18,7 +18,7 @@ motor1 = MotorController(26)
 pid = PID()
 reciever = Reciever()
 
-pid.set_constants(0.05,0,0)
+pid.set_constants(0.5,0,0)
 
 prev_time = time.time()
 current_time = 0
@@ -39,7 +39,7 @@ while True:
     motor_value = pid.compute(pitch, dt)
     motor1.set_motor_speed(motor_value)
     # motor2.set_motor_speed(motor_value)
-    time.sleep(0.01)
+    time.sleep(0.1)
 
 
 
