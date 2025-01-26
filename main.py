@@ -12,13 +12,13 @@ DEADBAND = 0.05 # ~ 3 degrees
 
 imu = IMU()
 
-motor1 = MotorController(26)
-motor2 = MotorController(12)
+# motor1 = MotorController(26)
+# motor2 = MotorController(12)
 
 pid = PID()
 reciever = Reciever()
 
-pid.set_constants(5,0,0)
+pid.set_constants(50,0,0)
 
 prev_time = time.time()
 current_time = 0
@@ -37,8 +37,8 @@ while True:
     prev_time = current_time
 
     motor_value = pid.compute(pitch, dt)
-    motor1.set_motor_speed(motor_value)
-    motor2.set_motor_speed(motor_value)
+    # motor1.set_motor_speed(motor_value)
+    # motor2.set_motor_speed(motor_value)
     time.sleep(0.01)
 
 

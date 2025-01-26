@@ -27,9 +27,10 @@ class PID():
 
         self.prev_error = error
 
-        motor_value = np.clip(P + I + D, MOTOR_MIN, MOTOR_SAFE_MAX)
-
+        motor_value = P + I + D
         print("MOTOR VAL:", motor_value)
+
+        motor_value = np.clip(motor_value, MOTOR_MIN, MOTOR_SAFE_MAX)
 
         return motor_value
     

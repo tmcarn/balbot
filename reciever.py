@@ -9,3 +9,5 @@ class Reciever():
     def get_inputs(self):
         data = np.array(self.bus.read())  # Read data from serial port
         return(data[2:8])  # print the data read from channels 1-6
+    
+
