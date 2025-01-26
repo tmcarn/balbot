@@ -3,6 +3,7 @@ import math
 
 MOTOR_MAX = 0.1
 MOTOR_MIN = 0.05
+MOTOR_SAFE_MAX = 0.05005
 
 class PID():
     def __init__(self):
@@ -26,7 +27,11 @@ class PID():
 
         self.prev_error = error
 
-        return np.clip(P + I + D, MOTOR_MIN, MOTOR_MAX)
+        motor_value = np.clip(P + I + D, MOTOR_MIN, MOTOR_SAFE_MAX)
+
+        print("MOTOR VAL:", motor_value)
+
+        return motor_value
     
     def set_constants(self, kp, ki, kd):
         self.Kp = kp
