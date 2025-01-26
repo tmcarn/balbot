@@ -18,7 +18,7 @@ imu = IMU()
 pid = PID()
 reciever = Reciever()
 
-pid.set_constants(0.01,0,0)
+pid.set_constants(0.001,0,0)
 
 prev_time = time.time()
 current_time = 0
