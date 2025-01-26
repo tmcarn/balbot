@@ -5,7 +5,7 @@ import numpy as np
 # ESC configuration
 PWM_FREQUENCY = 50  # 50 Hz (20ms period)
 MIN_THROTTLE = 0.05  # 1ms pulse width (5% duty cycle)
-SAFE_MAX = 0.06
+SAFE_MAX = 0.059
 MAX_THROTTLE = 0.1  
 MID_THROTTLE = (MIN_THROTTLE + MAX_THROTTLE) / 2  # Midpoint
 
