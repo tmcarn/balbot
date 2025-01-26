@@ -1,45 +1,53 @@
 from imu import IMU
 from motor_controller import MotorController
 from pid import PID
-from reciever import Reciever
+from steering_controller import Steering_Controller
 
 import math
 import time
 import numpy as np
 
-MAX_PITCH = math.pi / 2 # ~ 90 degrees
-DEADBAND = 0.05 # ~ 3 degrees
+PIN_1 = 26
+PIN_2 = 12
+
+LOOP_DELAY = 0.01
 
 imu = IMU()
 
-motor1 = MotorController(26)
-# motor2 = MotorController(12)
+motor1 = MotorController(PIN_1)
+# motor2 = MotorController(PIN_2)
 
 pid = PID()
-reciever = Reciever()
+reciever = Steering_Controller()
 
-pid.set_constants(0.05,0,0)
+pid.set_constants(0.5,0,0)
 
 prev_time = time.time()
 current_time = 0
 dt = 0
 
-
 while True:
-    pitch = imu.get_pitch() # in radians
+    try:
+        pitch = imu.get_pitch() # in radians
 
-    if pitch == None:
-        print("No IMU Reading")
-        continue
-    
-    current_time = time.time()
-    dt = current_time - prev_time
-    prev_time = current_time
+        if pitch == None:
+            print("No IMU Reading")
+            continue
+        
+        current_time = time.time()
+        dt = current_time - prev_time
+        prev_time = current_time
 
-    motor_value = pid.compute(pitch, dt)
-    motor1.set_motor_speed(motor_value)
-    # motor2.set_motor_speed(motor_value)
-    time.sleep(0.1)
+        motor_value = pid.compute(pitch, dt)
+        motor1.set_motor_speed(motor_value)
+        # motor2.set_motor_speed(motor_value)
+        time.sleep(LOOP_DELAY)
+
+    finally:
+        motor1.kill_motor()
+        # motor2.kill_motor()
+        print("Loop Terminated")
+
 
 
 
