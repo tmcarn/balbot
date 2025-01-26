@@ -18,7 +18,7 @@ motor1 = MotorController(26)
 pid = PID()
 reciever = Reciever()
 
-pid.set_constants(0.5,0,0)
+pid.set_constants(0.05,0,0)
 
 prev_time = time.time()
 current_time = 0
