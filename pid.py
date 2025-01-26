@@ -17,6 +17,7 @@ class PID():
 
     def compute(self, current_value, dt):
         error = current_value - self.setpoint
+        print(f"ERROR: {error}, SP: {self.setpoint}, CURRENT: {current_value}")
 
         self.integral += error * dt
         der = (error - self.prev_error)/dt
