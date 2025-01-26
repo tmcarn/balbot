@@ -35,7 +35,7 @@ while True:
         print("No IMU Reading")
         continue
 
-    elif np.abs(pitch)> 90:
+    elif np.abs(pitch)> 45:
         break
     
     current_time = time.time()
