@@ -4,8 +4,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 import math
 import pygame
+import pygame_widgets
 import gymnasium as gym
 
+PIXELS_p_M = 200 / 0.065
 
 class Env(gym.Env):
 
@@ -20,30 +22,30 @@ class Env(gym.Env):
         self.wheel = pygame.transform.scale(self.wheel, (200, 200))  # Scale the image if needed
        
         # Environment Properties
-        self.g = -981.0 # m/s^2
-        self.dampener = 0.9
+        self.g = -9.810 # m/s^2
+        self.dampener = 0.85
 
         # Robot Properties
-        self.length = 0.3 # meters
+        self.length = 0.1 # meters
         self.arm_mass = 0.5 #kg
         self.arm_inertia = (1/3) * self.arm_mass * (self.length ** 2)
 
-        self.arm_angle = 0.3
+        self.arm_angle = 0.001
         self.arm_angular_acceleration = 0.0  # Initial angular acceleration
         self.arm_angular_velocity = 0.0  # Initial angular velocity
         
 
         # Wheel Properties
-        self.wheel_radius = 0.1 # meters
-        self.wheel_mass = 0.1  # kg
+        self.wheel_radius = 0.065 # meters
+        self.wheel_mass = 0.01  # kg
         self.wheel_inertia = 0.5 * self.wheel_mass * (self.wheel_radius ** 2)  # Moment of inertia of the wheel
         
         self.wheel_angular_velocity = 0.0  # Angular velocity of the wheel
         self.wheel_angle = 0.0 # Angular position of the wheel
-        self.wheel_position = np.array([500, 600 - self.wheel_radius])
+        self.wheel_position = np.array([500, 500 - (self.wheel_radius * PIXELS_p_M)])
         self.wheel_torque = 0.0
 
-        self.base_torque = .1
+        self.base_torque = .5
 
         self.update_screen()
 
@@ -59,11 +61,11 @@ class Env(gym.Env):
         self.wheel_angular_acceleration = self.wheel_torque / self.wheel_inertia
         self.wheel_angular_velocity += self.wheel_angular_acceleration * self.dt
         self.wheel_angle -= self.wheel_angular_velocity * self.dt  # Updated in graphics
-        self.wheel_position[0] += self.wheel_angular_velocity * self.wheel_radius * self.dt  # Updated in graphics
+        self.wheel_position[0] += (self.wheel_angular_velocity * self.wheel_radius * self.dt)   # Updated in graphics
         
             
     def update_cog_pos(self):
-        delta = np.array([math.sin(self.arm_angle) * (self.length / METER_2_PIXEL), math.cos(self.arm_angle) *  (self.length / METER_2_PIXEL)])
+        delta = np.array([math.sin(self.arm_angle) * (self.length * PIXELS_p_M), math.cos(self.arm_angle) *  (self.length * PIXELS_p_M)])
         self.cog_pos = self.wheel_position - delta
     
     def update_screen(self):
@@ -75,7 +77,7 @@ class Env(gym.Env):
 
         self.fa = 0
 
-        rotated_wheel = pygame.transform.rotate(self.wheel, math.degrees(self.wheel_angle))
+        rotated_wheel = pygame.transform.rotate(self.wheel, (math.degrees(self.wheel_angle))/PIXELS_p_M)
         rect = rotated_wheel.get_rect(center=self.wheel_position)
         self.screen.blit(rotated_wheel, rect.topleft)
 
@@ -111,12 +113,12 @@ class PID():
 
         self.prev_error = error
 
-        return P + I + D
+        return -(P + I + D)
         
 
 
 myEnv = Env()
-att_controller = PID(10, 10, 5, 0) # Changes torque to achieve desired angle
+att_controller = PID(1, 0, 0, 0) # Changes torque to achieve desired angle
 running = True
 while running:
     for event in pygame.event.get():
@@ -125,14 +127,15 @@ while running:
 
     # Handle key presses for movement and rotation
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        myEnv.wheel_torque = - myEnv.base_torque  # Rotate clockwise
+    # if keys[pygame.K_LEFT]:
+    #     myEnv.wheel_torque = - myEnv.base_torque  # Rotate clockwise
     
-    elif keys[pygame.K_RIGHT]:
-        myEnv.wheel_torque = myEnv.base_torque  # Rotate clockwise
+    # elif keys[pygame.K_RIGHT]:
+    #     myEnv.wheel_torque = myEnv.base_torque  # Rotate clockwise
     
-    else:
-        myEnv.wheel_torque *= .01
+    # else:
+    #     myEnv.wheel_torque *= .01
     
-    # myEnv.wheel_torque = np.clip(att_controller.compute(myEnv.arm_angle), -1_000_000, 1_000_000)
+    myEnv.wheel_torque = np.clip(att_controller.compute(myEnv.arm_angle), -0.5, 0.5)
+    print(f"T_APPLIED: {myEnv.wheel_torque}, ERROR: {myEnv.arm_angle}")
     myEnv.update_screen()
