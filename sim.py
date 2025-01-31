@@ -15,14 +15,17 @@ class Env(gym.Env):
 
     def __init__(self):
         super().__init__()
+        pygame.init()
         self.screen = pygame.display.set_mode((1000,600))
+        pygame.display.set_caption("PID Demonstration")
+
         self.clock = pygame.time.Clock()
         self.tick = 30
         self.dt = 1/self.tick # 1/60th of a second
 
-        self.p_slider = Slider(self.screen, 100, 50, 100, 20, min=0, max=0.001, step=.0001, initial=0)
-        self.i_slider = Slider(self.screen, 100, 100, 100, 20, min=0, max=0.001, step=.0001, initial=0)
-        self.d_slider = Slider(self.screen, 100, 150, 100, 20, min=0, max=0.001, step=.0001, initial=0)
+        self.p_slider = Slider(self.screen, 250 - 50, 50, 100, 20, min=0, max=0.001, step=.00001, initial=0)
+        self.i_slider = Slider(self.screen, 500 - 50, 50, 100, 20, min=0, max=0.001, step=.00001, initial=0)
+        self.d_slider = Slider(self.screen, 750 - 50, 50, 100, 20, min=0, max=0.001, step=.00001, initial=0)
 
         self.pos_slider = Slider(self.screen, 200, 570, 600, 20, min=150, max=850, step=1, initial=500)
 
@@ -66,7 +69,6 @@ class Env(gym.Env):
         self.wheel_torque = 0.0
 
         self.max_ang = (math.pi/2) + math.asin(self.wheel_radius/self.length)
-
         self.base_torque = .6
 
     def reset(self):
@@ -92,19 +94,43 @@ class Env(gym.Env):
         self.wheel_angular_acceleration = self.wheel_torque / self.wheel_inertia
         self.wheel_angular_velocity += self.wheel_angular_acceleration * self.dt
         self.wheel_angle -= self.wheel_angular_velocity * self.dt  # Updated in graphics
-        self.wheel_position[0] += (self.wheel_angular_velocity * self.wheel_radius * self.dt)   # Updated in graphics
+        self.wheel_position[0] += (self.wheel_angular_velocity * self.wheel_radius * self.dt)
+
+        drift_rate = 1  # Small constant drift
+        self.wheel_position[0] += drift_rate * self.dt
+
         
-        # # Loop wheel back around
-        # if self.wheel_position[0] < 0:
-        #     self.wheel_position[0] = 1000
-        # elif self.wheel_position[0] > 1000:
-        #     self.wheel_position[0] = 0
         
         
    
     def update_screen(self):
         # Clear the screen
-        self.screen.blit(self.background, (0, 0)) 
+        self.screen.blit(self.background, (0, 0))
+
+        # Define a font and size
+        big_font = pygame.font.Font(None, 36)  # None uses the default font
+        small_font = pygame.font.Font(None, 24)
+
+        pid_text = big_font.render("PID Controls", True, (255, 255, 255))  # White text
+        text_rect = pid_text.get_rect(center=(500, 25))  # Center the text
+        self.screen.blit(pid_text, text_rect)
+
+        p_text = small_font.render(f"K_p = {(self.p_slider.getValue()*1000):.2f}", True, (255,255,255))
+        p_rect = p_text.get_rect(center = (250, 100))
+        self.screen.blit(p_text, p_rect)
+
+        i_text = small_font.render(f"K_i = {(self.i_slider.getValue()*1000):.2f}", True, (255,255,255))
+        i_rect = i_text.get_rect(center = (500, 100))
+        self.screen.blit(i_text, i_rect)
+
+        d_text = small_font.render(f"K_d = {(self.d_slider.getValue()*1000):.2f}", True, (255,255,255))
+        d_rect = d_text.get_rect(center = (750, 100))
+        self.screen.blit(d_text, d_rect)
+
+
+        reset_text = small_font.render("Click 'R' to Reset", True, (255,255,255))
+        reset_rect = reset_text.get_rect(center = (900, 580))
+        self.screen.blit(reset_text, reset_rect)
 
         self.update_properities()
 
@@ -138,13 +164,12 @@ class Env(gym.Env):
     
 class PID():
 
-    def __init__(self, kp, ki, kd, setpoint, deadband):
+    def __init__(self, kp, ki, kd, setpoint):
         self.Kp = kp
         self.Ki = ki
         self.Kd = kd
         self.setpoint = setpoint # Angle should be zero for ballanced robot
-        self.deadband = deadband
-        self.MAX_INT = 1
+        self.MAX_INT = 100
         
         self.prev_error = 0
         self.integral = 0
@@ -156,7 +181,7 @@ class PID():
         self.Kp, self.Ki, self.Kd = values
 
     def compute(self, current_value):
-        error = self.setpoint - current_value 
+        error = self.setpoint - current_value
 
         self.integral += error * self.dt
         self.integral = np.clip(self.integral, -self.MAX_INT, self.MAX_INT)
@@ -173,8 +198,8 @@ class PID():
 
 
 myEnv = Env()
-att_controller = PID(1, 0, 0.05, 0, math.radians(1)) # Changes torque to achieve desired angle
-pos_controller = PID(0.001, 0, 0, 800, 10) # Changes desired angle to get desired location
+att_controller = PID(1, 0, 0.05, 0) # Changes torque to achieve desired angle
+pos_controller = PID(0.001, 0, 0, 800) # Changes desired angle to get desired location
 running = True
 while running:
     for event in pygame.event.get():
@@ -186,18 +211,6 @@ while running:
 
     if keys[pygame.K_r]:
         myEnv.reset()
-    # if keys[pygame.K_LEFT]:
-    #     myEnv.wheel_torque = - myEnv.base_torque  # Rotate clockwise
-    
-    # elif keys[pygame.K_RIGHT]:
-    #     myEnv.wheel_torque = myEnv.base_torque  # Rotate clockwise
-    
-    # else:
-    #     myEnv.wheel_torque *= .01
-    # Get slider value
-
-
-    # pos_controller.setpoint = myEnv.slider.getValue()
 
     p_val = myEnv.p_slider.getValue()
     i_val = myEnv.i_slider.getValue()
@@ -206,10 +219,9 @@ while running:
     pos_controller.set_k_vals((p_val, i_val, d_val))
     pos_controller.setpoint = myEnv.pos_slider.getValue()
 
-    att_controller.setpoint = -1 * np.clip(pos_controller.compute(myEnv.wheel_position[0]), -0.05, 0.05)
-
-    print(f"ANGLE SET TO: {att_controller.setpoint:.2f} degrees; DERIVATIVE TERM: {att_controller.der:.2f}")
+    measured_position = myEnv.wheel_position[0]
+    att_controller.setpoint = -1 * np.clip(pos_controller.compute(measured_position), -0.05, 0.05)
     
-    myEnv.wheel_torque = np.clip(att_controller.compute(myEnv.arm_angle), -myEnv.base_torque, myEnv.base_torque)
+    myEnv.wheel_torque = np.clip(att_controller.compute(myEnv.arm_angle), -myEnv.base_torque, myEnv.base_torque) + 0.02
     
     myEnv.update_screen()
