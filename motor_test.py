@@ -9,9 +9,11 @@ stby = OutputDevice(5)
 
 print("Enabling motor (STBY HIGH)...")
 stby.on()  # Enable the motor driver
+pwm.on()
+
 
 print("Forward")
-motor.forward(0.5)
+motor.forward()
 time.sleep(2)
 
 print("Backwards")
