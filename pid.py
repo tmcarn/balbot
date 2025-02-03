@@ -26,6 +26,7 @@ class PID():
         self.prev_error = error
 
         motor_value = P + I + D
+        print(f'Raw PWM Value: {motor_value}')
         motor_value = np.clip(motor_value, -PWM_MAX, PWM_MAX)
 
         return motor_value

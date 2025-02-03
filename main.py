@@ -41,10 +41,8 @@ while running:
     dt = current_time - prev_time
     prev_time = current_time
 
-    pid.set_constants((1,0,0))
+    pid.set_constants((0.1,0,0))
     motor_value = pid.compute(pitch, dt)
-
-    print(f'PWM Value: {motor_value}')
 
     motors.update_motors(motor_value)
 
