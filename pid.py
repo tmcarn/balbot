@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-PWM_MAX = 1.2
+PWM_MAX = 1
 
 class PID():
     def __init__(self):
