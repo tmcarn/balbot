@@ -15,7 +15,7 @@ KILL_ANGLE = 60 # degrees
 imu = IMU()
 motors = MotorController()
 pid = PID()
-pid.setpoint = -6.8
+pid.setpoint = -6.5
 # reciever = RadioController()
 
 current_time = None
@@ -42,7 +42,7 @@ while running:
     dt = current_time - prev_time
     prev_time = current_time
 
-    pid.set_constants((0.095, 0.02, 0.05))
+    pid.set_constants((0.095, 0.02, 0.03))
     motor_value = pid.compute(pitch, dt)
 
     motors.update_motors(motor_value)

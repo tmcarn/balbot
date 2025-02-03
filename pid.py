@@ -10,7 +10,7 @@ class PID():
         self.Kd = 0
         self.setpoint = 0
 
-        self.alpha = 0.9
+        self.alpha = 0.95
         self.max_windup = 30
         
         self.prev_error = 0
@@ -24,7 +24,7 @@ class PID():
 
         # Smoothing
         raw_derivative = (error - self.prev_error) / dt
-        self.derivative = (self.alpha * self.derivative) + ((1 - self.alpha) * raw_derivative)  # 90% of previous derivative + 10% of current derivative
+        self.derivative = (self.alpha * self.derivative) + ((1 - self.alpha) * raw_derivative)  # 95% of previous derivative + 5% of current derivative
 
         P = self.Kp * error
         I = self.Ki * self.integral
