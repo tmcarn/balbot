@@ -9,7 +9,7 @@ import numpy as np
 
 LOOP_DELAY = 0.01 # ~100 loops per second
 
-KILL_ANGLE = 45 # degrees
+KILL_ANGLE = 60 # degrees
 
 # Initialization
 imu = IMU()
@@ -33,10 +33,10 @@ while running:
         print("No IMU Reading Availible")
         continue
 
-    # elif np.abs(pitch) > KILL_ANGLE:
-    #     motors.kill_motors()
-    #     running = False
-    #     break
+    elif np.abs(pitch) > KILL_ANGLE:
+        motors.kill_motors()
+        running = False
+        break
     
     current_time = time.time()
     dt = current_time - prev_time

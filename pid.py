@@ -9,19 +9,26 @@ class PID():
         self.Ki = 0
         self.Kd = 0
         self.setpoint = 0
+
+        self.alpha = 0.9
+        self.max_windup = 30
         
         self.prev_error = 0
         self.integral = 0
+        self.derivative = 0
 
     def compute(self, current_value, dt):
         error = current_value - self.setpoint
 
         self.integral += error * dt
-        der = (error - self.prev_error)/dt
+
+        # Smoothing
+        raw_derivative = (error - self.prev_error) / dt
+        self.derivative = (self.alpha * self.derivative) + ((1 - self.alpha) * raw_derivative)  # 90% of previous derivative + 10% of current derivative
 
         P = self.Kp * error
         I = self.Ki * self.integral
-        D = self.Kd * der
+        D = self.Kd * self.derivative
 
         self.prev_error = error
 
