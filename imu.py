@@ -18,18 +18,10 @@ class IMU():
         if attitude == None:
             return None
         
-        roll = math.radians(attitude['angx'])
+        roll = attitude['angx']
         pitch = attitude['angy']
-        yaw = math.radians(attitude['heading'])
+        yaw = attitude['heading']
 
         return pitch # in radians
     
 
-        
-    
-
-# # FOR TESTING
-# imu = IMU()
-
-# while True:
-#     print(imu.get_pitch())

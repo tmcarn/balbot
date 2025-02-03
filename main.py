@@ -1,55 +1,54 @@
 from imu import IMU
 from motor_controller import MotorController
 from pid import PID
-from steering_controller import Steering_Controller
+from radio_controller import RadioController
 
 import math
 import time
 import numpy as np
 
-PIN_1 = 26
-PIN_2 = 12
+LOOP_DELAY = 0.01 # ~100 loops per second
 
-LOOP_DELAY = 0.01
+KILL_ANGLE = 45 # degrees
 
+# Initialization
 imu = IMU()
-
-motor1 = MotorController(PIN_1)
-motor2 = MotorController(PIN_2)
-
+motors = MotorController()
 pid = PID()
-reciever = Steering_Controller()
+# reciever = RadioController()
 
-pid.set_constants(0.5,0,0)
-
+current_time = None
 prev_time = time.time()
-current_time = 0
-dt = 0
+dt = None
 
 running = True
 
-while True:
-    pitch = imu.get_pitch() # in radians
+while running:
+    pitch = imu.get_pitch() # in degrees
+
+    print(f'Angle: {pitch} degrees')
 
     if pitch == None:
-        print("No IMU Reading")
+        print("No IMU Reading Availible")
         continue
 
-    elif np.abs(pitch)> 70:
+    elif np.abs(pitch) > KILL_ANGLE:
+        motors.kill_motors()
+        running = False
         break
     
     current_time = time.time()
     dt = current_time - prev_time
     prev_time = current_time
 
+    pid.set_constants((1,0,0))
     motor_value = pid.compute(pitch, dt)
-    motor1.set_motor_speed(motor_value)
-    # motor2.set_motor_speed(motor_value)
+
+    print(f'PWM Value: {motor_value}')
+
+    motors.update_motors(motor_value)
+
     time.sleep(LOOP_DELAY)
-
-
-motor1.kill_motor()
-print("Loop Terminated")
 
 
     
