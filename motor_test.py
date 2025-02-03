@@ -12,10 +12,6 @@ stby.on()  # Enable the motor driver
 pwm.on()
 
 
-print("Forward")
-motor.forward()
-time.sleep(2)
+pwm.pulse(n=5)
 
-print("Backwards")
-motor.backward()
-time.sleep(2)
+motor.forward()
