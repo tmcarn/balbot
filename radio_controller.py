@@ -21,5 +21,7 @@ class RadioController():
         ki = scaled_inputs[4] * max_val
         kd = scaled_inputs[5] * max_val
 
+        print(f"PID VALUES: {(kp, ki, kd)}")
+
         return (kp, ki, kd)
 
