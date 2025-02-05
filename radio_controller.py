@@ -27,11 +27,3 @@ class RadioController():
         print(f"PID VALUES: {(kp, ki, kd)}")
 
         return (kp, ki, kd)
-
-
-rc = RadioController()
-
-
-while True:
-    rc.raw_inputs()
-    time.sleep(0.1)
