@@ -15,7 +15,7 @@ KILL_ANGLE = 60 # degrees
 imu = IMU()
 motors = MotorController()
 pid = PID()
-pid.setpoint = -6.5
+pid.setpoint = -0.5
 # reciever = RadioController()
 
 current_time = None
