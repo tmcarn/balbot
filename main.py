@@ -42,7 +42,7 @@ while running:
     dt = current_time - prev_time
     prev_time = current_time
 
-    pid.set_constants((0.5,0,0.1))
+    pid.set_constants((0.07,0,0.01))
     motor_value = pid.compute(pitch, dt)
 
     motors.update_motors(motor_value)
