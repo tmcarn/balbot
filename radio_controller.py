@@ -7,6 +7,7 @@ class RadioController():
 
     def raw_inputs(self):
         data = np.array(self.bus.read())  # Read data from serial port
+        print(f"DATA: {data}")
         return(data[2:8])  # Returns only data from our 6 channels
     
     def scaled_input(self):
