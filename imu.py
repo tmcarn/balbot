@@ -22,6 +22,6 @@ class IMU():
         pitch = attitude['angy']
         yaw = attitude['heading']
 
-        return pitch # in radians
+        return roll # in radians
     
 
