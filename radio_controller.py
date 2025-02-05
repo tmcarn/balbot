@@ -13,7 +13,7 @@ class RadioController():
         scaled_inputs = (self.raw_inputs() - 1500) / 500 # -1 to 1
         return scaled_inputs
     
-    def pid_controller(self, max_val):
+    def pid_constants(self, max_val):
         scaled_inputs = (self.raw_inputs() - 1000) / 1000 # 0 to 1
 
         # Scaled from 0 to max_val

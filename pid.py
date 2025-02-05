@@ -11,7 +11,7 @@ class PID():
         self.setpoint = 0
 
         self.alpha = 0.95
-        self.max_windup = 30
+        self.max_windup = 1
         
         self.prev_error = 0
         self.integral = 0
@@ -21,6 +21,8 @@ class PID():
         error = current_value - self.setpoint
 
         self.integral += error * dt
+        self.integral = np.clip(self.integral, -PWM_MAX / self.Ki if self.Ki != 0 else 0, PWM_MAX / self.Ki if self.Ki != 0 else 0)
+
 
         # Smoothing
         raw_derivative = (error - self.prev_error) / dt
