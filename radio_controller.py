@@ -34,4 +34,4 @@ rc = RadioController()
 
 while True:
     rc.raw_inputs()
-    time.sleep(0.1)
+    # time.sleep(0.1)
