@@ -7,7 +7,7 @@ class RadioController():
         self.bus = IBus('/dev/ttyAMA0')
 
     def raw_inputs(self):
-        self.bus.ser.reset_input_buffer()  # Flush old data
+        # self.bus.ser.reset_input_buffer()  # Flush old data
         data = np.array(self.bus.read())  # Read data from serial port
         print(f"DATA: {data}")
         return(data[2:8])  # Returns only data from our 6 channels
